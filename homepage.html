@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>List Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+        }
+
+        table {
+            margin: 20px auto;
+            width: 80%;
+            border-collapse: collapse;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        table:hover {
+            transform: scale(1.05);
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        button {
+            padding: 5px 10px;
+            margin: 5px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button.delete {
+            background-color: #f44336;
+        }
+
+        button.delete:hover {
+            background-color: #e53935;
+        }
+    </style>
+</head>
+<body>
+    <form action="/addCall">
+        
+        <button type="submit">Add Your Thoughts</button>
+    </form>
+    {{range .}}
+    <table>
+        <tr>
+            <td>{{.Title}}</td>
+            <td>
+                <form action="/updateCall">
+                    <button type="submit" name="_id" value="{{.ID}}">Update</button>
+                </form>
+            </td>
+            <td>
+                <form action="/delete">
+                    <button type="submit" name="_id" value="{{.ID}}">Delete</button>
+                </form>
+            </td>
+            <td>
+                {{.Votes}}
+
+            </td>
+            <td>
+                <form action="/vote">
+                    <input type="hidden" name="_id" value="{{.ID}}">
+                    <button type="submit" >Click to Vote</button>
+                </form>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">{{.Platform}}</td>
+        </tr>
+        <tr>
+            <td colspan="2">{{.Modules}}</td>
+        </tr>
+        <tr>
+            <td>
+                {{.Descriptions}}
+            </td>
+        </tr>
+        <tr>
+            <td>{{.Tags}}</td>
+        </tr>
+
+    </table>
+    {{end}}
+
+    
+</body>
+</html>

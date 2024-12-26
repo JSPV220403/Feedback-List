@@ -1,0 +1,211 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add</title>
+</head>
+<style>
+    /* Basic Styling */
+    body {
+        font-family: 'Arial', sans-serif;
+        background-color: #f4f7fc;
+        margin: 0;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    form {
+        max-width: 500px;
+        margin: 0 auto;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    input[type="text"],
+    input[type="file"],
+    button {
+        width: 100%;
+        padding: 12px;
+        margin: 8px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+        font-size: 16px;
+    }
+
+    button {
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #45a049;
+    }
+
+    label {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 5px;
+        display: block;
+    }
+
+    /* Dropdown Styling */
+    .dropdown {
+        position: relative;
+        margin-bottom: 15px;
+    }
+
+    .dropdown input[type="text"] {
+        cursor: pointer;
+        background-color: #f9f9f9;
+    }
+
+    .dropdown-content {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        display: none;
+        z-index: 1000;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        max-height: 200px;
+        overflow-y: auto;
+    }
+
+    .dropdown-content label {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        cursor: pointer;
+        font-size: 14px;
+    }
+
+    .dropdown-content label:hover {
+        background-color: #f0f0f0;
+    }
+
+    .dropdown-content input[type="checkbox"] {
+        margin-right: 10px;
+    }
+   
+    #fb{
+        height: 100px;
+        width: 200px;
+        font-size:large;
+    }
+    #bug{
+        height: 100px;
+        width: 100px;
+        font-size:large;
+    }
+    #idea{
+        height: 100px;
+        width: 100px;
+        font-size:large;
+    }
+
+    /* Responsive adjustments */
+    @media screen and (max-width: 600px) {
+        form {
+            width: 90%;
+            padding: 15px;
+        }
+
+        input[type="text"], 
+        input[type="file"], 
+        button {
+            font-size: 14px;
+        }
+    }
+</style>
+
+<body>
+    <form action="/add">
+        <input type="hidden" name="_id" value="{{.ID}}">
+    <input type="text" name="_title" required placeholder="Enter the title">
+    <div class="dropdown">
+        <label for="_platform">Platform</label>
+        <input type="text" name="_platform" required id="_platform" readonly placeholder="Click to select Platform">
+        <div class="dropdown-content" id="platform-dropdown">
+            <label><input type="checkbox" value="Android"> Android</label>
+            <label><input type="checkbox" value="ios"> iOS</label>
+            <label><input type="checkbox" value="web"> Web</label>
+        </div>
+    </div>
+    <div class="dropdown">
+        <label for="_modules">Module</label>
+        <input type="text" name="_modules" required id="_modules" readonly placeholder="Click to select Modules">
+        <div class="dropdown-content" id="modules-dropdown">
+            <label><input type="checkbox" value="Channel"> Channel</label>
+            <label><input type="checkbox" value="Project"> Project</label>
+            <label><input type="checkbox" value="Tasks"> Tasks</label>
+            <label><input type="checkbox" value="Chat"> Chat</label>
+            <label><input type="checkbox" value="Alert"> Alert</label>
+        </div>
+    </div>
+    <input type="file" name="_file" required placeholder="select file">
+    <label for="_desc">Description</label>
+    <input type="text" name="_desc" required placeholder="Enter the description">
+    <input type="hidden" name="buttonValue" required id="buttonValue">
+
+    <!-- Buttons that set the value -->
+    <button id="fb" type="button" onclick="setButtonValue('Feedback')">Feed Back</button>
+    <button id="bug" type="button" onclick="setButtonValue('Bug')">Bug</button>
+    <button id="idea" type="button" onclick="setButtonValue('Idea')">Idea</button><br><br>
+
+    <button type="submit">Submit</button>
+
+    </form>
+    <script>
+          function setButtonValue(value) {
+            document.getElementById('buttonValue').value = value;
+        }
+        function setupDropdown(inputId, dropdownId) {
+            const input = document.getElementById(inputId);
+            const dropdown = document.getElementById(dropdownId);
+            const checkboxes = dropdown.querySelectorAll('input[type="checkbox"]');
+
+            // Show/hide dropdown on input click
+            input.addEventListener('click', () => {
+                dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+            });
+
+            // Update input value based on selected checkboxes
+            checkboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    const selectedItems = Array.from(checkboxes)
+                        .filter(checkbox => checkbox.checked)
+                        .map(checkbox => checkbox.value);
+                    input.value = selectedItems.join(', ');
+                });
+            });
+
+            // Close the dropdown when clicking outside
+            document.addEventListener('click', (event) => {
+                if (!event.target.closest(`#${dropdownId}`) && !event.target.closest(`#${inputId}`)) {
+                    dropdown.style.display = 'none';
+                }
+            });
+        }
+
+        // Setup the dropdowns
+        setupDropdown('_platform', 'platform-dropdown');
+        setupDropdown('_modules', 'modules-dropdown');
+    </script>
+
+
+</body>
+</html>
